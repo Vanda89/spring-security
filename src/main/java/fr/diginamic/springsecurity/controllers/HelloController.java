@@ -1,4 +1,4 @@
-package fr.diginamic.springsecurity;
+package fr.diginamic.springsecurity.controllers;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,4 +22,11 @@ public class HelloController {
     public String postHelloPublic() throws Exception{
         return "Hello Post!";
     }
+
+    @GetMapping("/current-user")
+    public String currentUser(Authentication authentication) {
+        return "Logged in as: " + authentication.getName() +
+                " with roles: " + authentication.getAuthorities();
+    }
+
 }

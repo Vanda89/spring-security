@@ -1,10 +1,8 @@
-package fr.diginamic.springsecurity;
+package fr.diginamic.springsecurity.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,12 +19,14 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/hello/public").permitAll()
-                       .requestMatchers("/hello/private").authenticated()
+                        .requestMatchers("/hello/public", "/register", "/user-app/add").permitAll()
+                        .requestMatchers("/hello/private").authenticated()
+                        .requestMatchers("/current-user").authenticated()
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
+                        .loginProcessingUrl("/perform_login")
                         .defaultSuccessUrl("/hello/private")
                         .failureUrl("/hello/public")
                         .permitAll()
@@ -51,7 +51,7 @@ public class SecurityConfig {
         // User 2
         UserDetails user2 = User.withUsername("jane")
                 .password("motdepasse5678")
-                .roles( "ADMIN")
+                .roles("ADMIN")
                 .build();
 
         return new InMemoryUserDetailsManager(user1, user2);
