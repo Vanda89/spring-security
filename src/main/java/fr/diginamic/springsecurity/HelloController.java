@@ -22,10 +22,4 @@ public class HelloController {
     public String postHelloPublic() throws Exception{
         return "Hello Post!";
     }
-/*
-    @GetMapping("/current-user")
-    public String currentUser(Authentication authentication) {
-        return "Logged in as: " + authentication.getName() +
-                " with roles: " + authentication.getAuthorities();
-    }*/
 }
