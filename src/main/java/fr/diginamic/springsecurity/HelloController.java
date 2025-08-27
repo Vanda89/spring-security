@@ -1,5 +1,6 @@
 package fr.diginamic.springsecurity;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,4 +22,10 @@ public class HelloController {
     public String postHelloPublic() throws Exception{
         return "Hello Post!";
     }
+/*
+    @GetMapping("/current-user")
+    public String currentUser(Authentication authentication) {
+        return "Logged in as: " + authentication.getName() +
+                " with roles: " + authentication.getAuthorities();
+    }*/
 }
