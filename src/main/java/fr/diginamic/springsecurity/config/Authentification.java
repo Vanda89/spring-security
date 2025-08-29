@@ -1,4 +1,4 @@
-package fr.diginamic.springsecurity;
+package fr.diginamic.springsecurity.config;
 
 import org.springframework.security.core.GrantedAuthority;
 

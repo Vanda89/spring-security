@@ -1,5 +1,6 @@
-package fr.diginamic.springsecurity;
+package fr.diginamic.springsecurity.repositories;
 
+import fr.diginamic.springsecurity.entities.UserApp;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

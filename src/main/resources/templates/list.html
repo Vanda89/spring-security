@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>Liste des articles</title>
+</head>
+<body>
+<h2>Liste des articles</h2>
+
+<p th:text="${message}"></p>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Titre</th>
+        <th>Contenu</th>
+        <th>Auteur</th>
+    </tr>
+    <tr th:each="article : ${articles}">
+        <td th:text="${article.id}"></td>
+        <td th:text="${article.title}"></td>
+        <td th:text="${article.content}"></td>
+        <td th:text="${article.auteur.username}"></td>
+    </tr>
+</table>
+
+<br/>
+<a th:href="@{/article/new}">Ajouter un nouvel article</a>
+</body>
+</html>

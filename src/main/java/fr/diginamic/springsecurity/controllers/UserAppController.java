@@ -4,6 +4,7 @@ import fr.diginamic.springsecurity.services.CustomUserDetailsService;
 import fr.diginamic.springsecurity.entities.UserApp;
 import fr.diginamic.springsecurity.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,13 +13,11 @@ import java.util.List;
 @RequestMapping("/user-app")
 public class UserAppController {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+
     private final CustomUserDetailsService userService;
 
-    public UserAppController(UserRepository userRepository, PasswordEncoder passwordEncoder, CustomUserDetailsService userService) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+    public UserAppController(CustomUserDetailsService userService) {
+
         this.userService = userService;
     }
 
@@ -27,22 +26,27 @@ public class UserAppController {
         return userService.getAllUsers();
     }
 
-    @PostMapping("/add")
-    public void createUser(@RequestParam String username, @RequestParam String password) throws Exception {
-        userService.createUser(username, passwordEncoder.encode(password));
+    @PostMapping("/register")
+    @ResponseBody
+    public String createUser(@ModelAttribute UserApp user) throws Exception {
+        userService.createUser(
+                user.getUsername(),
+                user.getPassword()
+        );
+        return "Utilisateur créé";
     }
 
     @PutMapping(path = "/update/{id}")
-    public UserApp updateUser(@PathVariable Integer id, @RequestBody UserApp userApp) throws Exception {
-        return userService.getUserById(id).map(existingUser -> {
+    public UserApp updateUser(@PathVariable("id") Integer userId, @RequestBody UserApp userApp) throws Exception {
+        return userService.getUserById(userId).map(existingUser -> {
             existingUser.setUsername(userApp.getUsername());
             existingUser.setPassword(userApp.getPassword());
-            return userRepository.save(existingUser);
-        }).orElseThrow(() -> new RuntimeException("Utilisateur non trouvé avec cet id " + id));
+            return userService.updateUser(existingUser);
+        }).orElseThrow(() -> new RuntimeException("Utilisateur non trouvé avec cet id " + userId));
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteUser(@PathVariable Integer id) throws Exception {
-        userService.deleteUser(id);
+    public void deleteUser(@PathVariable("id") Integer userId) throws Exception {
+        userService.deleteUser(userId);
     }
 }
